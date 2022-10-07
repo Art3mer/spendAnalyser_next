@@ -9,7 +9,6 @@ import { DingdingOutlined, ZhihuOutlined } from "@ant-design/icons";
 // import "./App.css";
 import axios from "axios";
 
-
 const { Header, Content, Footer } = Layout;
 const App = () => {
   let person = {};
@@ -22,11 +21,10 @@ const App = () => {
   const [average, setAverage] = useState(0);
 
   const onFinish = async (values) => {
-    axios.post("/api/profile", values).then(
-      (res)=>{
-      console.log(localStorage.setItem("underId",res.data.data._id))
-    }
-    );
+    axios.post("/api/profile", values).then((res) => {
+      console.log(localStorage.setItem("underId", res.data.data._id));
+      localStorage.setItem("name", res.data.Name);
+    });
     setFlag(false);
     person = localStorage.getItem("person");
     let personArr = {};
@@ -38,7 +36,7 @@ const App = () => {
     console.log("Failed:", errorInfo);
   };
   const onFinish1 = (values) => {
-    values.id = localStorage.getItem("underId")
+    values.id = localStorage.getItem("underId");
     axios.post("/api/spendAnalyser", values).then(console.log("AAA"));
     // console.log("OnFinish1 Values: " + JSON.stringify(item));
     item.spend = values;
@@ -241,8 +239,16 @@ const App = () => {
                   console.log("UPDATE " + JSON.stringify(arr[item]));
                   return (
                     <div key={i}>
-                      <p>Name :<a target="_blank" href="/userDetails"> {arr[item].person.Name}</a></p>
-                      <p>Food : {arr[item].spend.Food}</p>
+                      <p>
+                        Name :
+                        <a
+                          target="_blank"
+                          href={`/userDetails?name=${arr[item].person.Name}`}
+                        >
+                          {" "}
+                          {arr[item].person.Name}
+                        </a>
+                      </p>
                       <p>average :{arr[item].average}</p>
                     </div>
                   );
